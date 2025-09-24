@@ -48,4 +48,5 @@ Le modèle est un réseau fully-connected avec une couche cachée de 512 neurone
 - Ajouter des visualisations des performances (courbes de perte/précision).
 
 ## Auteur
-- [Votre Nom] (https://github.com/frankettheofranckettheo)
+- [NOUNDJEU NOUBISSIE FRANCK] (https://github.com/frankettheofranckettheo)
+
