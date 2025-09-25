@@ -50,4 +50,8 @@ Le modèle est un réseau fully-connected avec une couche cachée de 512 neurone
 ## Auteur
 - NOUNDJEU NOUBISSIE FRANCK (https://github.com/frankettheofranckettheo)
 
+## Lien Overleaf du Rapport
+https://www.overleaf.com/4581563514bfmfxksbbrtp#97733e
+
+
 
