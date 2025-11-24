@@ -1,4 +1,4 @@
-# Projet de Classification MNIST
+# Tp2: Improving Deep Neural Networks
 
 ## Description
 Ce projet utilise un réseau de neurones artificiels implémenté avec TensorFlow/Keras pour classer les chiffres manuscrits du jeu de données MNIST. L'objectif est de construire un modèle capable de reconnaître les chiffres de 0 à 9 à partir d'images en niveaux de gris de 28x28 pixels.
@@ -56,6 +56,7 @@ sur la branche tp2
 
 ## Lien Overleaf du Rapport du tp2
 [https://www.overleaf.com/4581563514bfmfxksbbrtp#97733e](https://www.overleaf.com/7828934799zsfnffgnbtfb#632f93)
+
 
 
 
