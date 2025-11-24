@@ -50,8 +50,13 @@ Le modèle est un réseau fully-connected avec une couche cachée de 512 neurone
 ## Auteur
 - NOUNDJEU NOUBISSIE FRANCK (https://github.com/frankettheofranckettheo)
 
-## Lien Overleaf du Rapport
-https://www.overleaf.com/4581563514bfmfxksbbrtp#97733e
+## Lien du Projet github: 
+https://github.com/frankettheofranckettheo/Advanced-ML-Project
+sur la branche tp2
+
+## Lien Overleaf du Rapport du tp2
+[https://www.overleaf.com/4581563514bfmfxksbbrtp#97733e](https://www.overleaf.com/7828934799zsfnffgnbtfb#632f93)
+
 
 
 
