@@ -1,57 +1,88 @@
-# Projet de Classification MNIST
+# TP4 Deep Learning – Segmentation Sémantique
 
-## Description
-Ce projet utilise un réseau de neurones artificiels implémenté avec TensorFlow/Keras pour classer les chiffres manuscrits du jeu de données MNIST. L'objectif est de construire un modèle capable de reconnaître les chiffres de 0 à 9 à partir d'images en niveaux de gris de 28x28 pixels.
+**Auteur :** NOUNDJEU NOUBISSIE FRANCK (5GI 21P318 ENSPY)  
+**Date :** Décembre 2025
 
-Le modèle est un réseau fully-connected avec une couche cachée de 512 neurones, une régularisation par Dropout, et une couche de sortie avec activation softmax pour la classification multiclasse. Le modèle est entraîné sur 60 000 images et testé sur 10 000 images, atteignant une précision élevée sur les données de test.
+---
 
-## Dépendances
-- Python 3.x
-- TensorFlow 2.x
-- NumPy
-- Google Colab (pour l'exécution dans un environnement cloud)
+## Introduction
 
-## Installation
-1. Clonez ce dépôt :
-   ```bash
-   git clone https://github.com/frankettheofranckettheo/Advanced-ML-Project.git
-   cd Advanced-ML-Project
-   ```
-2. Si vous utilisez Google Colab, ouvrez le notebook `mnist_classification.ipynb` directement depuis GitHub via l'interface Colab.
+La segmentation sémantique est une tâche clé en vision par ordinateur, notamment dans l’imagerie médicale, où la localisation précise des structures anatomiques est essentielle pour le diagnostic et le suivi clinique. Contrairement à la classification classique, la segmentation attribue une étiquette à chaque pixel, nécessitant des architectures capables de capturer à la fois le contexte global et les détails fins.
 
-## Utilisation
-1. **Dans Google Colab** :
-   - Ouvrez le notebook `mnist_classification.ipynb`.
-   - Exécutez toutes les cellules pour charger les données MNIST, entraîner le modèle, et sauvegarder le modèle entraîné dans Google Drive (`/content/drive/MyDrive/Models/mnist_model.keras`).
-   - Le modèle est sauvegardé au format `.keras` pour une réutilisation facile.
+Ce TP a pour objectif :
 
-2. **Localement** :
-   - Assurez-vous que les dépendances sont installées :
-     ```bash
-     pip install tensorflow numpy
-     ```
-   - Exécutez le script Python ou le notebook localement.
+- D’étudier et mettre en œuvre l’architecture **U-Net** pour la segmentation d’images médicales.
+- D’analyser des métriques spécifiques telles que le **coefficient de Dice** et l’**Intersection over Union (IoU)**.
+- D’introduire les convolutions tridimensionnelles (**Conv3D**) pour le traitement des données volumétriques.
+- De mettre en pratique de bonnes pratiques d’ingénierie avec **MLflow** pour le suivi des expériences.
 
-## Structure du projet
-- `mnist_classification.ipynb` : Notebook contenant le code principal pour charger, entraîner et évaluer le modèle.
-- `mnist_model.keras` : Modèle entraîné sauvegardé (stocké dans Google Drive ou dans le dépôt si poussé).
-- `README.md` : Ce fichier, décrivant le projet.
+---
 
-## Résultats
-- Le modèle atteint une précision d'environ 98 % sur les données de test après 5 époques d'entraînement.
-- La perte utilisée est `sparse_categorical_crossentropy`, adaptée à la classification multiclasse.
-- L'optimiseur `Adam` est utilisé pour une convergence rapide et stable.
+## Partie 1 : Segmentation et Bonnes Pratiques MLOps
 
-## Prochaines étapes
-- Expérimenter avec d'autres architectures (par exemple, CNN pour améliorer la précision).
-- Ajuster les hyperparamètres (nombre d'époques, taille des lots, taux de dropout).
-- Ajouter des visualisations des performances (courbes de perte/précision).
+### Segmentation sémantique et architecture U-Net
 
-## Auteur
-- NOUNDJEU NOUBISSIE FRANCK (https://github.com/frankettheofranckettheo)
+- **Type et dimension de la sortie :**  
+  Pour une segmentation binaire médicale, le modèle produit un tenseur de dimension `(N, H, W, C)` avec `C = 1` et activation sigmoïde.
 
-## Lien Overleaf du Rapport
-https://www.overleaf.com/4581563514bfmfxksbbrtp#97733e
+- **Rôle du décodeur et des connexions de saut :**  
+  Le décodeur restaure la résolution spatiale tout en produisant une prédiction pixel-par-pixel.  
+  Les **skip connections** permettent de récupérer les informations spatiales perdues dans l’encodeur pour améliorer la précision.
 
+- **Limites de la cross-entropy et Dice Loss :**  
+  Dans les cas où la classe d’intérêt est très minoritaire, la cross-entropy classique est insuffisante. La **Dice Loss** est plus adaptée car elle favorise le recouvrement entre la prédiction et la vérité terrain.
 
+### Bonnes pratiques d’ingénierie : suivi des expériences
 
+- **Convention de nommage des expériences :**  
+  Exemple : `UNet2D_Adam_DiceLoss`.
+
+- **Journalisation des métriques personnalisées :**  
+  Les métriques comme Dice ou IoU doivent être implémentées et loggées via `MLflow.log_metric()` pour comparer les expériences.
+
+---
+
+## Partie 2 : Segmentation sur données médicales
+
+### Coefficient de Dice
+
+\[
+\text{Dice} = \frac{2 |A \cap B|}{|A| + |B|}
+\]
+
+Mesure le recouvrement entre le masque prédit et le masque réel. Particulièrement adapté aux objets de petite taille.
+
+### Intersection over Union (IoU)
+
+\[
+\text{IoU} = \frac{|A \cap B|}{|A \cup B|}
+\]
+
+Métrique stricte qui pénalise davantage les erreurs, surtout pour de petites régions d’intérêt.
+
+### Comparaison Dice vs IoU
+
+- Dice : plus stable pour de petites cibles, tolérant aux petites erreurs.  
+- IoU : plus sévère et stricte pour la qualité de segmentation.  
+
+---
+
+## Partie 3 : Convolutions 3D et données volumétriques
+
+### Conv3D pour données volumétriques
+
+- **Différence avec Conv2D :**  
+  Conv2D agit sur `(H, W)`. Conv3D agit sur `(D, H, W)`, indispensable pour IRM ou scanners CT.
+
+- **Contraintes mémoire et compromis :**  
+  Les Conv3D sont coûteuses. On peut réduire la résolution, utiliser moins de filtres ou traiter des sous-volumes (patch-based learning).
+
+---
+
+## Conclusion
+
+Ce TP illustre :
+
+- L’importance des architectures spécialisées comme **U-Net** pour la segmentation médicale.
+- L’utilisation de métriques adaptées (**Dice**, **IoU**).  
+- Les défis des données volumétriques et l’importance des bonnes pratiques MLOps avec MLflow.
