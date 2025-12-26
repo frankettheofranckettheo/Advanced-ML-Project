@@ -1,57 +1,80 @@
-# Projet de Classification MNIST
+# TP3 Deep Learning
 
-## Description
-Ce projet utilise un réseau de neurones artificiels implémenté avec TensorFlow/Keras pour classer les chiffres manuscrits du jeu de données MNIST. L'objectif est de construire un modèle capable de reconnaître les chiffres de 0 à 9 à partir d'images en niveaux de gris de 28x28 pixels.
+**Auteur :** Franck NOUNDJEU  
+**Date :** Novembre 2025
 
-Le modèle est un réseau fully-connected avec une couche cachée de 512 neurones, une régularisation par Dropout, et une couche de sortie avec activation softmax pour la classification multiclasse. Le modèle est entraîné sur 60 000 images et testé sur 10 000 images, atteignant une précision élevée sur les données de test.
+---
 
-## Dépendances
-- Python 3.x
-- TensorFlow 2.x
-- NumPy
-- Google Colab (pour l'exécution dans un environnement cloud)
+## Introduction
 
-## Installation
-1. Clonez ce dépôt :
-   ```bash
-   git clone https://github.com/frankettheofranckettheo/Advanced-ML-Project.git
-   cd Advanced-ML-Project
-   ```
-2. Si vous utilisez Google Colab, ouvrez le notebook `mnist_classification.ipynb` directement depuis GitHub via l'interface Colab.
+Ce TP3 explore les fondamentaux des **CNN (Convolutional Neural Networks)** et leurs applications avancées, incluant la segmentation d’images, la détection d’objets et le transfert de style neuronal. L’objectif est de comprendre la théorie, puis de mettre en pratique ces concepts sur des datasets et des architectures populaires.
 
-## Utilisation
-1. **Dans Google Colab** :
-   - Ouvrez le notebook `mnist_classification.ipynb`.
-   - Exécutez toutes les cellules pour charger les données MNIST, entraîner le modèle, et sauvegarder le modèle entraîné dans Google Drive (`/content/drive/MyDrive/Models/mnist_model.keras`).
-   - Le modèle est sauvegardé au format `.keras` pour une réutilisation facile.
+---
 
-2. **Localement** :
-   - Assurez-vous que les dépendances sont installées :
-     ```bash
-     pip install tensorflow numpy
-     ```
-   - Exécutez le script Python ou le notebook localement.
+## Partie 1 : Fondamentaux des CNN
 
-## Structure du projet
-- `mnist_classification.ipynb` : Notebook contenant le code principal pour charger, entraîner et évaluer le modèle.
-- `mnist_model.keras` : Modèle entraîné sauvegardé (stocké dans Google Drive ou dans le dépôt si poussé).
-- `README.md` : Ce fichier, décrivant le projet.
+### Concepts théoriques
 
-## Résultats
-- Le modèle atteint une précision d'environ 98 % sur les données de test après 5 époques d'entraînement.
-- La perte utilisée est `sparse_categorical_crossentropy`, adaptée à la classification multiclasse.
-- L'optimiseur `Adam` est utilisé pour une convergence rapide et stable.
+- **Convolution :**  
+  - Filtre (Kernel) : petite matrice (ex : 3x3) qui détecte des caractéristiques (bords, textures, motifs).  
+  - Stride : déplacement du filtre à chaque étape.  
+  - Objectif : extraire des **feature maps** représentatives des caractéristiques visuelles.
 
-## Prochaines étapes
-- Expérimenter avec d'autres architectures (par exemple, CNN pour améliorer la précision).
-- Ajuster les hyperparamètres (nombre d'époques, taille des lots, taux de dropout).
-- Ajouter des visualisations des performances (courbes de perte/précision).
+- **Pooling :**  
+  - Max Pooling : conserve la valeur maximale d’une zone.  
+  - Average Pooling : moyenne des valeurs d’une zone.  
+  - Rôle : réduire la dimensionnalité et le coût de calcul tout en conservant l’invariance aux translations.
 
-## Auteur
-- NOUNDJEU NOUBISSIE FRANCK (https://github.com/frankettheofranckettheo)
+- **Flatten :**  
+  Convertit les matrices 3D des feature maps en vecteurs 1D pour les couches denses.
 
-## Lien Overleaf du Rapport
-https://www.overleaf.com/4581563514bfmfxksbbrtp#97733e
+- **Réseaux résiduels (ResNets) :**  
+  Les connexions résiduelles (skip connections) permettent de résoudre le problème de gradient disparu dans les réseaux profonds en facilitant l’apprentissage de fonctions résiduelles.
 
+### Préparation des données CIFAR-10
 
+- Chargement et prétraitement des images pour l’entraînement des CNN.
 
+---
+
+## Partie 2 : Implémentation basique des CNN
+
+### Exercice 1 : Architecture classique des CNN
+
+- Création et entraînement d’un CNN simple pour la classification d’images.
+
+### Exercice 2 : Introduction aux blocs résiduels (ResNets)
+
+- Implémentation de la fonction `residual_block` pour permettre l’apprentissage dans des réseaux profonds.  
+- **Avantage du skip connection :** apprentissage de la fonction résiduelle \(F(x) = H(x) - x\) pour éviter la dégradation des performances.
+
+---
+
+## Partie 3 : Applications avancées
+
+### Exercice 3 : Reconnaissance et détection
+
+#### Image Segmentation (U-Net)
+
+- **Sortie :** masque de pixels de même taille que l’image d’entrée.  
+- **Upsampling :** restaure la résolution spatiale pour classifier chaque pixel précisément.
+
+#### Object Detection (Bounding Boxes)
+
+- **Classification :** identifie la classe de l’objet.  
+- **Régression :** prédit la position et la taille de la bounding box \((x, y, w, h)\).
+
+### Exercice 4 : Neural Style Transfer
+
+- **Content Loss :** conserve la structure et les objets de l’image de contenu.  
+- **Style Loss :** conserve les textures et motifs de l’image de style via les matrices de Gram.
+
+---
+
+## Conclusion
+
+Ce TP3 a permis de :
+
+- Comprendre les principes fondamentaux des CNN et des ResNets.  
+- Mettre en pratique des architectures pour la classification, la segmentation et la détection.  
+- Explorer des applications avancées comme le neural style transfer.
